@@ -82,11 +82,21 @@ label {
 }
 .btn:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  transform: translateY(-1px);
 }
 .btn-icon {
   margin-left: 0.75rem;
   font-size: 1.2rem;
 }
+.btn-disabled{
+  background-color: gray;
+  cursor: auto;
+}
+.btn-disabled:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transform: translateY(0);
+}
+
 .list {
   margin: 2rem 0.75rem 0 0.75rem;
   list-style-type: none;
@@ -184,4 +194,27 @@ label {
   .info {
     flex: 0 0 50%;
   }
+}
+
+.modal{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  z-index: 1;
+}
+
+.modal-content{
+  background-color: white;
+  padding: 5rem 10rem;
+}
+
+.modal-content> *{
+  color: black;
 }

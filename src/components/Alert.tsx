@@ -1,11 +1,16 @@
-import React from 'react'
+import React from "react";
 
-const Alert = () => {
-    return (
-        <div>
-            Alert
-        </div>
-    )
-}
+type AlertProps = {
+  alert: {
+    show: boolean;
+    type: string;
+    text: string;
+  };
+};
 
-export default Alert
+const Alert: React.FC<AlertProps> = ({ alert }) => {
+  const { show, type, text } = alert;
+  return <div className={`${"alert alert-"}${type}`}>{text}</div>;
+};
+
+export default Alert;
