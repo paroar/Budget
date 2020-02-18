@@ -4,7 +4,7 @@ import { MdSend } from "react-icons/md";
 type ExpenseFormProps = {
   addItemBtn: (event: React.FormEvent<HTMLFormElement>) => void;
   charge: string;
-  amount: number | string;
+  amount: number;
   handleCharge: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isSubmitDisabled: boolean;
@@ -21,6 +21,8 @@ const ExpenseForm: React.FC<ExpenseFormProps> = props => {
     isSubmitDisabled,
     edit
   } = props;
+
+  const sanitizedAmmount = isNaN(amount) ? "" : amount
 
   return (
     <form onSubmit={addItemBtn}>
@@ -48,7 +50,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = props => {
             id="amount"
             name="amount"
             min={0}
-            value={amount}
+            value={sanitizedAmmount}
             onChange={e => handleAmount(e)}
           />
         </div>

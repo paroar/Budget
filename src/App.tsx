@@ -8,7 +8,7 @@ import uuid from "uuid/v4";
 type initial = {
   id: string;
   charge: string;
-  amount: number | string;
+  amount: number;
 };
 
 const initialExpenses = [
@@ -21,7 +21,7 @@ const App = () => {
   const [expenses, setExpenses] = useState<initial[]>(initialExpenses);
 
   const [charge, setCharge] = useState("");
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(NaN);
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
@@ -47,7 +47,7 @@ const App = () => {
         handleAlert("success", "Item Added to the list");
       }
       setCharge("");
-      setAmount("");
+      setAmount(NaN);
     }
   };
 
@@ -96,7 +96,7 @@ const App = () => {
     const keyEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setCharge("");
-        setAmount("");
+        setAmount(NaN);
       }
     };
     window.addEventListener("keydown", keyEscape);
@@ -129,7 +129,6 @@ const App = () => {
         <span className="total">
           $
           {expenses.reduce((acc, curr) => {
-            //@ts-ignore
             return (acc += curr.amount);
           }, 0)}
         </span>
