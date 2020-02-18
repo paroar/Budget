@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
@@ -25,7 +25,14 @@ const App = () => {
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-  const [alert, setAlert] = useState({ show: false, type: "", text: "" });
+  const [alert, setAlert] = useState({
+    show: false,
+    type: "",
+    text: "",
+    count: 0
+  });
+
+  const actualCount = useRef<number>(0);
 
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState("");
@@ -35,16 +42,15 @@ const App = () => {
     if (charge !== "" && !isNaN(amount) && amount > 0) {
       if (edit) {
         const tempExpenses = expenses.map(e => {
-          return e.id === id ? {...e, charge, amount} : e;
-        })
+          return e.id === id ? { ...e, charge, amount } : e;
+        });
         setExpenses(tempExpenses);
         setEdit(false);
-        handleAlert("success", "Item Edited");
-
+        handleAlert("success", "Item Edited", alert.count);
       } else {
         const singleExpense = { id: uuid(), charge, amount };
         setExpenses([...expenses, singleExpense]);
-        handleAlert("success", "Item Added to the list");
+        handleAlert("success", "Item Added to the list", alert.count);
       }
       setCharge("");
       setAmount(NaN);
@@ -59,21 +65,29 @@ const App = () => {
     setAmount(e.target.valueAsNumber);
   };
 
-  const handleAlert = (type: string, text: string) => {
-    setAlert({ show: true, type, text });
-    setTimeout(() => {
-      setAlert({ show: false, type: "", text: "" });
-    }, 3000);
+  const handleAlert = (type: string, text: string, count: number) => {
+    const c = count+1;
+    actualCount.current++;
+    setAlert({ show: true, type, text, count: c });
+    time(c);
   };
 
+  const time = (c:number) => {
+    setTimeout(() => {
+      if (actualCount.current === c) {
+        setAlert({ show: false, type: "", text: "", count: 0 });
+      }
+    }, 5000);
+  }
+
   const clearExpenses = () => {
-    handleAlert("danger", "All Items Deleted from the list");
+    handleAlert("danger", "All Items Deleted from the list", alert.count);
     setExpenses([]);
   };
 
   const clearExpense = (id: string) => {
     setExpenses(expenses.filter(e => e.id !== id));
-    handleAlert("danger", "Item Deleted from the list");
+    handleAlert("danger", "Item Deleted from the list", alert.count);
   };
 
   const handleEdit = (id: string) => {
